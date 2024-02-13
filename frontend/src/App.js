@@ -6,6 +6,7 @@ import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
 import { auth } from './firebase';
+import Chats from './components/Chats/Chats';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/chats" element={<Chats />} />
           <Route path="/" element={<Home name={userName}/>} />
         </Routes>
       </Router>
