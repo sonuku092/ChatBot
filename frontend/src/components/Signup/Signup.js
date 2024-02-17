@@ -4,7 +4,8 @@ import styles from './Signup.module.css';
 import InputControl from '../InputControl/InputControl';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '../../firebase'; // Import collection and db
+import { auth, db } from '../../firebase'; // Import collection and db
+import { collection, addDoc, doc} from 'firebase/firestore'; // Import addDoc 
 
 function Signup() {
   const navigate = useNavigate();
@@ -29,17 +30,37 @@ function Signup() {
     createUserWithEmailAndPassword(auth, values.email, values.pass)
       .then(async (res) => {
         const user = res.user;
+        console.log(user);
         await updateProfile(user, {
           displayName: values.name,
         });
 
         setSubmitButtonDisabled(false);
-        navigate("/");
+
+        try {
+          const docRef = await addDoc(collection(db, "Users"), {
+            User_ID : user.uid,
+            Name: user.displayName,
+            Email: user.email,
+            Password: values.pass,
+          });
+
+          const val = doc(db, "Users", docRef.id);
+          const collectionVal = collection(val, "Chats");
+          const newDoc = await addDoc(collectionVal, {
+            User_ID: user.uid,
+            Chat: "Hello",
+          });
+
+          navigate("/");
+        } catch (e) {
+          setErrorMsg(e.message);
+        }
+        
       })
       .catch((err) => {
         setSubmitButtonDisabled(false);
         setErrorMsg(err.message);
-        console.error("Error -", err.message);
       });
   };
 
