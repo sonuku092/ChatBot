@@ -49,10 +49,10 @@ function Signup() {
           const collectionVal = collection(val, "Chats");
           const newDoc = await addDoc(collectionVal, {
             User_ID: user.uid,
-            Chat: "Hello",
+            Message: "Hello",
           });
 
-          navigate("/");
+          navigate("/Chats");
         } catch (e) {
           setErrorMsg(e.message);
         }

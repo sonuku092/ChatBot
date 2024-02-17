@@ -1,10 +1,14 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
-function Chats() {
+
+function Chats(props) {
   return (
     <div>
-      <h1>Chats</h1>
-    </div>
+        <h2>
+          {props.name ? `Welcome - ${props.name}` : "Please Login"}
+        </h2>    
+      </div>
   )
 }
 
