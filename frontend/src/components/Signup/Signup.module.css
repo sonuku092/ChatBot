@@ -2,7 +2,7 @@
     height: 100%;
     min-height: 100vh;
     width: 100%;
-    background: linear-gradient(to right, #92c7f8, #12aafc);
+    background: white;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -13,7 +13,7 @@
       height: fit-content;
       width: fit-content;
       background-color: aliceblue;
-      box-shadow: 1px 1px 4px rgb(0, 0, 0);
+      box-shadow: 0.5px 0.5px 4px rgb(121, 121, 121);
       padding: 30px;
       border-radius: 10px;
       display: flex;

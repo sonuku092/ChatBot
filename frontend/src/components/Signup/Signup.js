@@ -1,5 +1,5 @@
 // Signup.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Signup.module.css';
 import InputControl from '../InputControl/InputControl';
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,6 +16,13 @@ function Signup() {
     pass: "",
   });
 
+  useEffect(() => { 
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, []);
+
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
@@ -24,6 +31,7 @@ function Signup() {
       setErrorMsg("Fill all fields");
       return;
     }
+    
     setErrorMsg("");
     setSubmitButtonDisabled(true);
 
@@ -31,10 +39,12 @@ function Signup() {
       .then(async (res) => {
         const user = res.user;
         console.log(user);
+
         await updateProfile(user, {
           displayName: values.name,
         });
 
+        
         setSubmitButtonDisabled(false);
 
         try {
@@ -52,7 +62,9 @@ function Signup() {
             Message: "Hello",
           });
 
-          navigate("/Chats");
+          localStorage.setItem("token", await user.getIdToken());
+          localStorage.setItem("userName", user.displayName);
+          navigate("/");
         } catch (e) {
           setErrorMsg(e.message);
         }

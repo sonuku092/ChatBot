@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styles from './Login.module.css'
 import InputControl from '../InputControl/InputControl'
 import { Link , useNavigate} from 'react-router-dom'
@@ -13,6 +13,13 @@ function Login() {
     pass : "",
   });
 
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    if(token){
+      navigate("/");
+    }
+  },[]);
+
   const[errorMsg, setErrorMsg] = useState("");
   const[summitButtonDisabled, setSummitButtonDisabled] = useState(false);
 
@@ -22,6 +29,7 @@ function Login() {
       setErrorMsg("Fill all fields");
       return;
     }
+    
     setErrorMsg("");
     
     setSummitButtonDisabled(true);
@@ -29,6 +37,9 @@ function Login() {
     signInWithEmailAndPassword(auth,values.email, values.pass)
     .then(async(res)=>{
       setSummitButtonDisabled(false);
+
+      localStorage.setItem("token", await res.user.getIdToken());
+      localStorage.setItem("userName", res.user.displayName);
       navigate("/")
     })
     .catch((err)=>{
