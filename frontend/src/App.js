@@ -1,33 +1,23 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';  
+import React from 'react';  
 import { BrowserRouter as Router, Routes, Route  } from 'react-router-dom';
 
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
-import { auth } from './firebase';
 import Chats from './components/Chats/Chats';
+import Protected from './components/Protected';
 
 function App() {
-
-  const[userName, setUserName] = useState("");
-
-  useEffect(()=>{
-    auth.onAuthStateChanged((user)=>{
-      if(user){
-        setUserName(user.displayName);
-      } else setUserName("");
-    });
-  },[])
 
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/chats" element={<Chats />} />
-          <Route path="/" element={<Home name={userName}/>} />
+          <Route path="/" element={<Protected Component={ Chats  }/>} />
+          <Route path="/home" element={<Home/>} />
         </Routes>
       </Router>
     </div>

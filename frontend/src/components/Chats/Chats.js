@@ -1,10 +1,39 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
 
-function Chats() {
+
+function Chats(props) {
+
+  const [userName, setUserName] = useState("");
+
+  useEffect(()=>{
+    setUserName(localStorage.getItem("userName"));  
+  },[userName]);
+  
+  const handleSignout = () => {
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    window.location.reload();
+    
+    signOut(auth)
+      .then(() => {
+        console.log("Signout successful");
+      })
+      .catch((error) => {
+        console.log("Signout error", error);
+      });
+  };
+
   return (
     <div>
-      <h1>Chats</h1>
-    </div>
+        <h2>
+          {userName ? `Welcome - ${userName}` : "Please Login"}
+        </h2>    
+        <button onClick={handleSignout}>Logout</button>
+      </div>
   )
 }
 

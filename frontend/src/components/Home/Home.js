@@ -1,13 +1,18 @@
-import { signOut } from 'firebase/auth';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { auth } from '../../firebase';
 import styles from './Home.module.css'
+import { useNavigate } from 'react-router-dom';
 
 function Home(props) {
-  const handleSignout = () => {
-    signOut(auth);
-  };
+
+ const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  });
 
   return (
     <div className={styles.container}>
@@ -32,7 +37,6 @@ function Home(props) {
         <h2 className={styles["welcome-message"]}>
           {props.name ? `Welcome - ${props.name}` : "Please Login"}
         </h2>
-        <button className={styles.button} onClick={handleSignout}>Logout</button>
       </div>
     </div>
   );
