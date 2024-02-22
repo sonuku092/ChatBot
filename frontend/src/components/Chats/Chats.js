@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
+import "./Chats.module.css";
 
 function Chats(props) {
   const [userName, setUserName] = useState("");
@@ -36,17 +37,21 @@ function Chats(props) {
 
   return (
     <div className="h-screen">
-      <div className="w-full px-14 py-1 bg-slate-400">
+      <div className="w-full px-14 py-1 ">
         <div className="flex gap-1">
           <div className="flex-none px-10 max-h-max  rounded-sm py-2 items-center">
             <h1>Chatbot</h1>
           </div>
           <div className="flex-grow max-h-max  rounded-sm py-2">
-            <button onClick={handleSignout}>Logout</button>
+            <button onClick={handleSignout}>
+              Logout
+            </button>
           </div>
           <div className="flex w-auto pl-8 py-1 max-h-max  rounded-sm items-center">
-            <h2>{userName ? `Welcome - ${userName}` : "Please Login"}</h2>
-            <div className="w-6 h-6 rounded-[50%] border-[1px] mx-2 border-black"></div>
+            <h2 className=" text-[#5f9ea0]">
+              {userName ? `Welcome - ${userName}` : "Please Login"}
+            </h2>
+            <div className="w-6 h-6 rounded-[50%] border-[1px] mx-2 border-[#5f9ea0]"></div>
           </div>
         </div>
       </div>

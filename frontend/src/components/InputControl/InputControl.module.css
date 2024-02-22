@@ -1,26 +1,48 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+/* InputControl.module.css */
+
+.input::placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 }
 
-.container label {
-    font-weight: 700;
-    font-size: 1rem;
-    color: #4b4b4b;
+.input:focus::placeholder {
+  opacity: 1;
 }
 
-.container input {
-    border-radius: 5px;
-    border: 1px solid #eee;
-    outline: none;
-    padding: 10px 15px;
-    color: #000;
+.inputContainer {
+  position: relative;
 }
 
-.container input:hover{
-    border-color: #ccc;
+.input {
+  padding: 10px;
+  border: 1px solid cadetblue; /* Default border color */
+  border-radius: 5px;
+  width: 100%;
+  transition: border-color 0.3s ease-in-out; /* Transition for border color */
 }
-.container input:focus{
-    border-color: aqua;
+
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  background-color: white;
+  padding: 0 5px;
+  color: cadetblue;
+  font-size: 0.9rem;
+  font-weight: 500;
+  pointer-events: none;
+  transition: 0.3s ease-in-out;
+}
+
+.input:focus + .label,
+.input:not(:placeholder-shown) + .label,
+.input:focus + .label {
+  top: -2px;
+  background-color: white;
+  padding: 0 5px;
+  color: cadetblue;
+  font-size: 0.9rem;
+  transition: 0.3s ease-in-out;
 }

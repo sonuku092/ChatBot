@@ -79,7 +79,7 @@ function Signup() {
   return (
     <div className={styles.container}>
       <div className={styles.innerBox}>
-        <h1 className={styles.heading}>Sign up</h1>
+        <h1 className={styles.heading}>Create your account</h1>
         <InputControl
           label="Name"
           placeholder="Enter your Name"

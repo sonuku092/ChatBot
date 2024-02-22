@@ -1,14 +1,20 @@
-import React from 'react'
+// InputControl.js
+import React from 'react';
+import styles from './InputControl.module.css';
 
-import styles from './InputControl.module.css'
-
-function InputControl(props) {
+function InputControl({ label, placeholder, value, onChange }) {
   return (
-    <div className={styles.container}>
-      {props.label && <label>{props.label}</label>}
-      <input type='text' {...props}/>
+    <div className={styles.inputContainer}>
+      <input
+        className={styles.input}
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
+      <label className={styles.label}>{label}</label>
     </div>
-  )
+  );
 }
 
-export default InputControl
+export default InputControl;

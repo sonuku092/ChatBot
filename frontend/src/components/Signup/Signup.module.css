@@ -8,12 +8,19 @@
       align-items: center;
   }
   
+  .heading{
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+    color: cadetblue;
+  }
+  
   .innerBox {
       min-width: 480px;
       height: fit-content;
       width: fit-content;
       background-color: aliceblue;
-      box-shadow: 0.5px 0.5px 4px rgb(121, 121, 121);
+      border: 1px solid cadetblue;
       padding: 30px;
       border-radius: 10px;
       display: flex;
