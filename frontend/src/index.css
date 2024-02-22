@@ -1,15 +1,46 @@
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
+:root {
+  --color-primary: #ff0000;
+  --color-secondary: #00ff00;
+  --color-tertiary: #0000ff;
+  --color-text: #000000;
+  --color-background: #ffffff;
+  --color-border: #000000;
+  --color-link: #0000ff;
+  --color-link-hover: #ff0000;
+  --color-link-visited: #800080;
+  --color-link-active: #00ff00;
+  --color-link-focus: #ffff00;
+  --color-link-disabled: #808080;
+  --color-link-text: #ffffff;
+  --color-link-text-hover: #ffffff;
+  --color-link-text-visited: #ffffff;
+  --color-link-text-active: #ffffff;
+
+  --blue-gradient: linear-gradient(
+    144.39deg,
+    #def9fa 0.89%,
+    #bef3f5 17.23%,
+    #9dedf0 42.04%,
+    #7de7eb 55.12%,
+    #5ce1e6 71.54%,
+    #33bbcf 100%
+  );
+  
+  --red-gradient: linear-gradient(
+    144.39deg,
+    #f9d3d3 0.89%,
+    #f5b7b7 17.23%,
+    #f09b9b 42.04%,
+    #eb7f7f 55.12%,
+    #e66363 71.54%,
+    #cf3333 100%
+  );
+  --card-shadow: 0px 20px 100px -10px rgba(225, 229, 248, 0.1);
+  --card-shadow1: 0px 0px 10px 2px rgba(0, 229, 255, 0.129);
+
+  
+}

@@ -21,7 +21,7 @@ function Signup() {
     if (token) {
       navigate("/");
     }
-  }, []);
+  });
 
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
