@@ -1,15 +1,19 @@
 /* Home.css */
 
-/* Styles for the container */
 body{
   background-color: rgb(255, 255, 255);
   /* font-family: Arial, sans-serif; */
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .container {
     margin: 0 auto;
-    padding: 20px;
-    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
   }
 
   .intro{
@@ -19,43 +23,48 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid black;
   }
   
   /* Styles for the links */
   .right {
     width: 40%;
-    height: fit-content;
     margin: 0 auto;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid black;
   }
   
   /* Styles for the buttons */
-  .button {
+  button {
+    width: 200px;
     background-color: #007bff;
     color: #fff;
     border: none;
+    font-weight: 600;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
   }
   
-  .button:hover {
+  button:hover {
     background-color: #0056b3;
   }
   
-  /* Styles for the welcome message */
-  .welcome-message {
-    font-size: 24px;
-    margin-top: 20px;
+  .intro h1 {
+    /* Apply styles using a preprocessor like Sass or Less */
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
   }
   
-  /* Styles for the logout button */
-  .logout-button {
-    margin-top: 20px;
+  .intro p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  } 
+
+  .right h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
   }
-  

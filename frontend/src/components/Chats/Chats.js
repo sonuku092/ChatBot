@@ -39,7 +39,7 @@ function Chats(props) {
     <div className="h-screen">
       <div className="w-full px-14 py-1 ">
         <div className="flex gap-1">
-          <div className="flex-none px-10 max-h-max  rounded-sm py-2 items-center">
+          <div className="flex-none px-4 max-h-max  rounded-sm py-2 items-center ">
             <h1>Chatbot</h1>
           </div>
           <div className="flex-grow max-h-max  rounded-sm py-2">
