@@ -28,10 +28,10 @@ function Home(props) {
         </h1>
         <div className={`${styles.Link} md:flex gap-1`}>
           <Link to="/login">
-            <button>Login</button>
+            <button className={styles.button}>Login</button>
           </Link>
           <Link to="/signup">
-            <button>Sign up</button>
+            <button className={styles.button}>Sign up</button>
           </Link>
         </div>
         <h2 className=" text-2px mt-10">

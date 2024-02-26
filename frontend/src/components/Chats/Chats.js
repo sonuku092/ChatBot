@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
-import "./Chats.module.css";
+import styles from './Chats.module.css';
 
 function Chats(props) {
   const [userName, setUserName] = useState("");
   const [showList, setShowList] = useState(true);
   const [showVoice, setShowVoice] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUserName(localStorage.getItem("userName"));
@@ -19,7 +21,7 @@ function Chats(props) {
 
     signOut(auth)
       .then(() => {
-        console.log("Signout successful");
+        navigate("/Home");
       })
       .catch((error) => {
         console.log("Signout error", error);
@@ -27,7 +29,6 @@ function Chats(props) {
   };
 
   const toggleList = () => {
-    setShowVoice(false)
     setShowList(!showList);
   };
 
@@ -37,18 +38,21 @@ function Chats(props) {
 
   return (
     <div className="h-screen">
-      <div className="w-full px-14 py-1 ">
+      <div className="w-full px-14 py-1 mb-1  ">
         <div className="flex gap-1">
-          <div className="flex-none px-4 max-h-max  rounded-sm py-2 items-center ">
-            <h1>Chatbot</h1>
+          <div className="flex items-center px-2 max-h-max rounded-sm py-1">
+            <h1 className={styles.heading}>Chatbot</h1>
           </div>
-          <div className="flex-grow max-h-max  rounded-sm py-2">
-            <button onClick={handleSignout}>
+          <div className="flex-grow max-h-max rounded-sm py-2">
+            <button className={styles.button} onClick={handleSignout}>
               Logout
             </button>
           </div>
-          <div className="flex w-auto pl-8 py-1 max-h-max  rounded-sm items-center">
-            <h2 className=" text-[#5f9ea0]">
+          <div className="flex w-auto px-5 py-1 max-h-max rounded-sm items-center hover:bg-slate-50">
+            <h1>Eng</h1>
+          </div>
+          <div className="flex w-auto pl-8 py-1 max-h-max rounded-sm items-center hover:bg-slate-50 hover:cursor-pointer">
+            <h2 className="text-[#5f9ea0]">
               {userName ? `Welcome - ${userName}` : "Please Login"}
             </h2>
             <div className="w-6 h-6 rounded-[50%] border-[1px] mx-2 border-[#5f9ea0]"></div>
@@ -57,32 +61,25 @@ function Chats(props) {
       </div>
 
       <div className="w-full h-[93vh] flex">
-
-        <div className={`w-${showList ? '1/4' : '0'} border-2 transition-all duration-500 overflow-hidden `}>
-          <div className="border-b-2 pb-2">
-            {showList && 
-            <div className=" w-[200px]">
-              List
+        <div className={`${styles.slider} ${showList ? styles.show : styles.hide}`}>
+          {showList && 
+            <div className="p-2 w-44">
+              List the items
             </div>}
-          </div>
         </div>
 
-        <div className="w-auto border-2 flex-grow">
+        <div className="w-auto mx-1 border-2 flex-grow rounded-lg">
           <h1>Main Content</h1>
-          <button onClick={toggleList}>Toggle List</button>
-          <button onClick={toggleVoice}>Toggle Voice</button>
-          {showList && <div>List content...</div>}
+          <button className={styles.button} onClick={toggleList}>Toggle List</button>
+          <button className={styles.button} onClick={toggleVoice}>Toggle Voice</button>
         </div>
 
-        <div className={`w-${showVoice ? 'fit' : '0'} md:block border-2 transition-all duration-2000 overflow-hidden`}>
-          <div className="border-b-2 pb-2">
-            {showVoice && 
-            <div className=" w-[400px]">
-              Voice
+        <div className={`${styles.rslider} ${showVoice ? styles.show : styles.hide}`}>
+          {showVoice && 
+            <div className="w-[400px] pb-2 m-6">
+              Voice content...
             </div>}
-          </div>
         </div>
-
       </div>
     </div>
   );

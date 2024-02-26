@@ -1,19 +1,33 @@
-.body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f5f5f5;
+.slider {
+    box-shadow: hsla(0, 0%, 0%, 0.450) 0px 0px 5px -2px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: width 0.5s ease-in-out;
+    width: 0;
 }
 
-button{
-    background-color: #f5f5f5;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.rslider {
+    box-shadow: rgba(0, 0, 0, 0.450) 0px 0px 5px -2px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: width 0.5s ease-in-out;
+    width: 0;
 }
 
-button:hover{
-    background-color: #e0e0e0;
+.slider.show {
+    width: 15%;
+    margin-left: 6px;
 }
 
+.rslider.show {
+    width: 400px;
+    margin-right: 6px;
+}
+
+.slider.hide {
+    width: 0;
+}
+
+.rslider.hide {
+    width: 0;
+}
