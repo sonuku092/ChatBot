@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import styles from './Chats.module.css';
+import { io } from "socket.io-client";
 
 function Chats(props) {
   const [userName, setUserName] = useState("");
@@ -10,8 +11,18 @@ function Chats(props) {
   const [showVoice, setShowVoice] = useState(false);
   const navigate = useNavigate();
 
+  const socket = io("http://localhost:5173");
+
   useEffect(() => {
     setUserName(localStorage.getItem("userName"));
+
+    socket.on("connect", () => {
+      console.log("Connected to server", socket.id);
+    });
+    
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   const handleSignout = () => {
