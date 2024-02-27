@@ -214,19 +214,30 @@ function Chats(props) {
 
         <div className="w-auto mx-1 border-2 flex-grow rounded-lg">
           <div className="max-h-full m-12">
-            <div className="h-[500px] overflow-y-scroll" style={{ color: 'whitesmoke', color: 'black' }}>
+            <div className="flex justify-between">
+            <button onClick={toggleList} className="bg-blue-600 text-white p-1 rounded-lg"> List </button>
+            <button onClick={toggleVoice} className="bg-blue-600 text-white p-1 rounded-lg"> Voice </button>
+            </div>
+            
+            <div className="h-[500px]  rounded-lg overflow-y-scroll" style={{ color: 'whitesmoke', color: 'black' }}>
 
               {messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`mb-4 ${message.fromUser ? 'text-black-600 text-right to-blue ' : 'text-white-800'} rounded-md p-1`}
+                  className={` flex  ${message.fromUser ? 'text-black-600 justify-end' : ''} rounded-md p-1 `}
                 >
-                  {message.text}
+                  <div className={`${message.fromUser ? 'text-end':''} bg-slate-100 max-w-[70%] px-1 py-1 rounded-md`}>
+                    <p className="text-sm font-bold">{message.fromUser ? 'You' : 'Bot'}</p>
+                    <p className="rounded bg-white px-2 py-1 ">
+                      {message.text}
+                    </p>
+                  </div>
                 </div>
               ))}
               
               {isTyping && (
                 <div className="mb-4 text-gray-600">
+                  <span className="animate-bounce inline-block">&#9612;</span>
                   <span className="animate-bounce inline-block">&#9612;</span>
                   <span className="animate-bounce inline-block">&#9612;</span>
                   <span className="animate-bounce inline-block">&#9612;</span>
