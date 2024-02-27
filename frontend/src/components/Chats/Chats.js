@@ -60,10 +60,10 @@ function Chats(props) {
         </div>
       </div>
 
-      <div className="w-full h-[93vh] flex">
+      <div className="w-full h-[93vh] pb-1 flex">
         <div className={`${styles.slider} ${showList ? styles.show : styles.hide}`}>
           {showList && 
-            <div className="p-2 w-44">
+            <div className="p-2 m-1 rounded-md bg-slate-100 items-center">
               List the items
             </div>}
         </div>
