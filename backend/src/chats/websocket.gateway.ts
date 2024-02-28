@@ -1,15 +1,9 @@
-// src/chats/websocket.gateway.ts
-
 import { WebSocketGateway, WebSocketServer, OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import { Socket } from 'socket.io';
 
 @WebSocketGateway()
-export class WebSocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  @WebSocketServer() server: Server;
-
-  afterInit(server: Server) {
-    console.log('WebSocket gateway initialized');
-  }
+export class MyWebSocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+  @WebSocketServer() server;
 
   handleConnection(client: Socket) {
     console.log(`Client connected: ${client.id}`);
@@ -19,5 +13,7 @@ export class WebSocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
     console.log(`Client disconnected: ${client.id}`);
   }
 
-  // Add more methods to handle WebSocket events and messages
+  afterInit(server: any) {
+    console.log('WebSocket Gateway initialized');
+  }
 }
