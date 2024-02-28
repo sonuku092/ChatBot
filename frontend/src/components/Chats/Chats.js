@@ -8,7 +8,7 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import { useSpeechRecognition } from 'react-speech-recognition';
 import { split } from 'sentence-splitter';
 import SpeechRecognition from 'react-speech-recognition';
-
+import axios from 'axios'; // Import Axios
 
 function Chats(props) {
   const [userName, setUserName] = useState("");
@@ -21,35 +21,28 @@ function Chats(props) {
   const [messages, setMessages] = useState([{ text: 'Hello, I am Chatbot', fromUser: false }]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [lastBotMessage, setLastBotMessage] = useState(null);
 
   const { speak } = useSpeechSynthesis();
   const { transcript, listening } = useSpeechRecognition();
 
-  const keyValuePairList = {}; // Define your key-value pairs
-  const fixedAnswers = {}; // Define your fixed answers
+  const predefinedAnswers = {
+    "What is your name?": "My name is Chatbot.",
+    // Define your predefined answers here
+  };
 
   const handleUserInput = async () => {
     const userMessage = input.trim();
 
     if (userMessage) {
-      if (keyValuePairList.hasOwnProperty(userMessage)) {
-        // Handle key-value pairs
-        const value = keyValuePairList[userMessage];
+      if (predefinedAnswers.hasOwnProperty(userMessage)) {
+        const predefinedAnswer = predefinedAnswers[userMessage];
         setMessages((prevMessages) => [
           ...prevMessages,
           { text: `${userMessage}`, fromUser: true },
-          { text: `${value}`, fromUser: false },
+          { text: `${predefinedAnswer}`, fromUser: false },
         ]);
-        speak({ text: value });
-      } else if (fixedAnswers.hasOwnProperty(userMessage)) {
-        // Handle predefined answers
-        const fixedAnswer = fixedAnswers[userMessage];
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: `${userMessage}`, fromUser: true },
-          { text: `${fixedAnswer}`, fromUser: false },
-        ]);
-        speak({ text: fixedAnswer });
+        speak({ text: predefinedAnswer });
       } else {
         // Handle other user messages
         setIsTyping(true);
@@ -112,6 +105,8 @@ function Chats(props) {
                   fromUser: false,
                 },
               ]);
+
+              setLastBotMessage(sentence); // Set the last bot message
             }
           }
 
@@ -126,14 +121,11 @@ function Chats(props) {
   const lastSpokenMessageRef = useRef(null);
 
   useEffect(() => {
-    if (messages.length > 0) {
-      const lastMessage = messages[messages.length - 1];
-      if (!lastMessage.fromUser && lastMessage.text !== lastSpokenMessageRef.current) {
-        speak({ text: lastMessage.text });
-        lastSpokenMessageRef.current = lastMessage.text;
-      }
+    if (lastBotMessage && lastBotMessage !== lastSpokenMessageRef.current) {
+      speak({ text: lastBotMessage });
+      lastSpokenMessageRef.current = lastBotMessage;
     }
-  }, [messages, speak]);
+  }, [lastBotMessage, speak]);
 
   const handleInputChange = (event) => {
     setInput(event.target.value);
@@ -215,10 +207,10 @@ function Chats(props) {
         <div className="w-auto mx-1 border-2 flex-grow rounded-lg">
           <div className="max-h-full m-12">
             <div className="flex justify-between">
-            <button onClick={toggleList} className="bg-blue-600 text-white p-1 rounded-lg"> List </button>
-            <button onClick={toggleVoice} className="bg-blue-600 text-white p-1 rounded-lg"> Voice </button>
+              <button onClick={toggleList} className="bg-blue-600 text-white p-1 rounded-lg"> List </button>
+              <button onClick={toggleVoice} className="bg-blue-600 text-white p-1 rounded-lg"> Voice </button>
             </div>
-            
+
             <div className="h-[500px]  rounded-lg overflow-y-scroll" style={{ color: 'whitesmoke', color: 'black' }}>
 
               {messages.map((message, index) => (
@@ -226,7 +218,7 @@ function Chats(props) {
                   key={index}
                   className={` flex  ${message.fromUser ? 'text-black-600 justify-end' : ''} rounded-md p-1 `}
                 >
-                  <div className={`${message.fromUser ? 'text-end':''} bg-slate-100 max-w-[70%] px-1 py-1 rounded-md`}>
+                  <div className={`${message.fromUser ? 'text-end' : ''} bg-slate-100 max-w-[70%] px-1 py-1 rounded-md`}>
                     <p className="text-sm font-bold">{message.fromUser ? 'You' : 'Bot'}</p>
                     <p className="rounded bg-white px-2 py-1 ">
                       {message.text}
@@ -234,7 +226,7 @@ function Chats(props) {
                   </div>
                 </div>
               ))}
-              
+
               {isTyping && (
                 <div className="mb-4 text-gray-600">
                   <span className="animate-bounce inline-block">&#9612;</span>
@@ -268,7 +260,7 @@ function Chats(props) {
                 type="submit"
                 onClick={handleSubmit}
                 className="bg-blue-600 text-white p-2 ml-2 rounded-[50%] w-10 h-10"
-                >
+              >
                 Ok
               </button>
             </form>
