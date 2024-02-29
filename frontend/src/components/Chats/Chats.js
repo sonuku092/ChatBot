@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
@@ -8,6 +8,7 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import { useSpeechRecognition } from 'react-speech-recognition';
 import { split } from 'sentence-splitter';
 import SpeechRecognition from 'react-speech-recognition';
+import axios from 'axios'; // Import Axios
 
 function Chats(props) {
   const [userName, setUserName] = useState("");
@@ -15,22 +16,23 @@ function Chats(props) {
   const [showVoice, setShowVoice] = useState(false);
   const navigate = useNavigate();
 
-  const socket = useMemo(() => io("http://localhost:5173"), []);
+  const socket = useMemo(() => io("http://localhost:8001"), []);
 
   const [messages, setMessages] = useState([{ text: 'Hello, I am Chatbot', fromUser: false }]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [lastBotMessage, setLastBotMessage] = useState(null);
+  const [conversationHistory, setConversationHistory] = useState([]);
 
   const { speak } = useSpeechSynthesis();
   const { transcript, listening } = useSpeechRecognition();
 
-  const predefinedAnswers = useMemo(() => ({
+  const predefinedAnswers = {
     "What is your name?": "My name is Chatbot.",
     // Define your predefined answers here
-  }), []);
+  };
 
-  const handleUserInput = useCallback(async () => {
+  const handleUserInput = async () => {
     const userMessage = input.trim();
 
     if (userMessage) {
@@ -43,6 +45,7 @@ function Chats(props) {
         ]);
         speak({ text: predefinedAnswer });
       } else {
+        // Handle other user messages
         setIsTyping(true);
         const userMessage = input;
         setInput('');
@@ -62,14 +65,7 @@ function Chats(props) {
 
       setInput('');
     }
-  }, [input, speak, socket, predefinedAnswers]);
-
-  const handleSubmit = useCallback((event) => {
-    if (event) {
-      event.preventDefault();
-    }
-    handleUserInput();
-  }, [handleUserInput]);
+  };
 
   useEffect(() => {
     if (transcript) {
@@ -83,7 +79,7 @@ function Chats(props) {
     if (!listening && input.trim() !== '') {
       handleSubmit();
     }
-  }, [listening, input, handleSubmit]);
+  }, [listening]);
 
   const isProcessingRef = useRef(false);
 
@@ -111,7 +107,7 @@ function Chats(props) {
                 },
               ]);
 
-              setLastBotMessage(sentence);
+              setLastBotMessage(sentence); // Set the last bot message
             }
           }
 
@@ -136,12 +132,28 @@ function Chats(props) {
     setInput(event.target.value);
   };
 
+  const handleSubmit = (event) => {
+    if (event) {
+      event.preventDefault();
+    }
+    handleUserInput();
+  };
+
   useEffect(() => {
     setUserName(localStorage.getItem("userName"));
 
     socket.on("connect", () => {
       console.log("Connected to server", socket.id);
     });
+
+    // Fetch conversation history from backend when component mounts
+    axios.get('http://localhost:8001/conversations')
+      .then(response => {
+        setConversationHistory(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching conversation history:', error);
+      });
 
     return () => {
       socket.disconnect();
