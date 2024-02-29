@@ -57,7 +57,7 @@ function Signup() {
 
           const val = doc(db, "Users", docRef.id);
           const collectionVal = collection(val, "Chats");
-          const newDoc = await addDoc(collectionVal, {
+          addDoc(collectionVal, {
             User_ID: user.uid,
             Message: "Hello",
           });

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
@@ -8,7 +8,6 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import { useSpeechRecognition } from 'react-speech-recognition';
 import { split } from 'sentence-splitter';
 import SpeechRecognition from 'react-speech-recognition';
-import axios from 'axios'; // Import Axios
 
 function Chats(props) {
   const [userName, setUserName] = useState("");
@@ -26,12 +25,12 @@ function Chats(props) {
   const { speak } = useSpeechSynthesis();
   const { transcript, listening } = useSpeechRecognition();
 
-  const predefinedAnswers = {
+  const predefinedAnswers = useMemo(() => ({
     "What is your name?": "My name is Chatbot.",
     // Define your predefined answers here
-  };
+  }), []);
 
-  const handleUserInput = async () => {
+  const handleUserInput = useCallback(async () => {
     const userMessage = input.trim();
 
     if (userMessage) {
@@ -44,7 +43,6 @@ function Chats(props) {
         ]);
         speak({ text: predefinedAnswer });
       } else {
-        // Handle other user messages
         setIsTyping(true);
         const userMessage = input;
         setInput('');
@@ -64,7 +62,14 @@ function Chats(props) {
 
       setInput('');
     }
-  };
+  }, [input, speak, socket, predefinedAnswers]);
+
+  const handleSubmit = useCallback((event) => {
+    if (event) {
+      event.preventDefault();
+    }
+    handleUserInput();
+  }, [handleUserInput]);
 
   useEffect(() => {
     if (transcript) {
@@ -78,7 +83,7 @@ function Chats(props) {
     if (!listening && input.trim() !== '') {
       handleSubmit();
     }
-  }, [listening]);
+  }, [listening, input, handleSubmit]);
 
   const isProcessingRef = useRef(false);
 
@@ -106,7 +111,7 @@ function Chats(props) {
                 },
               ]);
 
-              setLastBotMessage(sentence); // Set the last bot message
+              setLastBotMessage(sentence);
             }
           }
 
@@ -116,7 +121,7 @@ function Chats(props) {
         isProcessingRef.current = false;
       }
     });
-  }, [socket]);
+  }, [socket, isTyping]);
 
   const lastSpokenMessageRef = useRef(null);
 
@@ -131,13 +136,6 @@ function Chats(props) {
     setInput(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    if (event) {
-      event.preventDefault();
-    }
-    handleUserInput();
-  };
-
   useEffect(() => {
     setUserName(localStorage.getItem("userName"));
 
@@ -148,7 +146,7 @@ function Chats(props) {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [socket]);
 
   const handleSignout = () => {
     localStorage.removeItem("token");
@@ -211,7 +209,7 @@ function Chats(props) {
               <button onClick={toggleVoice} className="bg-blue-600 text-white p-1 rounded-lg"> Voice </button>
             </div>
 
-            <div className="h-[500px]  rounded-lg overflow-y-scroll" style={{ color: 'whitesmoke', color: 'black' }}>
+            <div className="h-[500px]  rounded-lg overflow-y-scroll">
 
               {messages.map((message, index) => (
                 <div

@@ -3,7 +3,7 @@ import { Socket } from 'socket.io';
 
 @WebSocketGateway()
 export class MyWebSocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  @WebSocketServer() server;
+  @WebSocketServer() server: any;
 
   handleConnection(client: Socket) {
     console.log(`Client connected: ${client.id}`);

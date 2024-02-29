@@ -19,7 +19,7 @@ function Login() {
     if (token) {
       navigate('/');
     }
-  }, []);
+  }, [navigate]);
 
   const [errorMsg, setErrorMsg] = useState('');
   const [summitButtonDisabled, setSummitButtonDisabled] = useState(false);
