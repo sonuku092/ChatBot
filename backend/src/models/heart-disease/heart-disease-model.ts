@@ -25,12 +25,58 @@ async function loadHeartDiseaseDataset() {
     }
 }
 
-// Usage
+// Define and train the model
 async function trainHeartDiseaseModel() {
     const { xs, ys } = await loadHeartDiseaseDataset();
     if (xs && ys) {
-        // Define and train the model using xs and ys
+        const model = tf.sequential();
+        model.add(tf.layers.dense({ units: 10, inputShape: [xs.shape[1]], activation: 'relu' }));
+        model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+
+        model.compile({
+            optimizer: 'adam',
+            loss: 'binaryCrossentropy',
+            metrics: ['accuracy']
+        });
+
+        await model.fit(xs, ys, {
+            epochs: 50,
+            shuffle: true,
+            callbacks: {
+                onEpochEnd: (epoch, logs) => {
+                    console.log(`Epoch ${epoch + 1}: loss = ${logs.loss.toFixed(4)}, accuracy = ${logs.acc.toFixed(4)}`);
+                }
+            }
+        });
+
+        return model;
     }
 }
 
-trainHeartDiseaseModel();
+// Usage
+(async () => {
+    const model = await trainHeartDiseaseModel();
+    if (model) {
+        // Make predictions on new data
+        const newData = [
+            [0.63, 1, 3, 145, 233, 1, 0, 150, 0, 2.3, 0, 0, 1], // Example new data point
+            // Add more new data points here if needed
+        ];
+
+        // Convert the new data to a tensor
+        const newInput = tf.tensor2d(newData);
+
+        // Make predictions
+        const predictions = model.predict(newInput) as tf.Tensor;
+
+        // Convert predictions tensor to a JavaScript array
+        const predictionsArray = predictions.dataSync();
+
+        // Log predictions
+        console.log('Predictions:', predictionsArray);
+
+        // Clean up: dispose tensors
+        newInput.dispose();
+        predictions.dispose();
+    }
+})();
