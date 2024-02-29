@@ -1,7 +1,12 @@
+// src/chats/chats.module.ts
+
 import { Module } from '@nestjs/common';
-import { MyWebSocketGateway } from './websocket.gateway'; // Import MyWebSocketGateway
+import { ChatsController } from './chats.controller';
+import { ChatsService } from './chats.service';
+import { OpenaiService } from '../shared/services/openai.service'; // Import OpenaiService
 
 @Module({
-  providers: [MyWebSocketGateway],
+    controllers: [ChatsController],
+    providers: [ChatsService, OpenaiService], // Add OpenaiService to providers
 })
 export class ChatsModule {}

@@ -1,28 +1,44 @@
+// src/shared/services/openai.service.ts
+
 import { Injectable } from '@nestjs/common';
-import { OpenAIConstants } from '../constants/openai.constants';
 import axios from 'axios';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
-export class OpenAIService {
-  async fetchResponseForFixedQuestion(question: string): Promise<string> {
-    // Implement logic to fetch response for fixed questions using OpenAI API or any other method
-    // Example using OpenAI API:
-    try {
-      const response = await axios.post(OpenAIConstants.apiUrl, {
-        prompt: question,
-        max_tokens: 50, // Adjust this based on your requirement
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${OpenAIConstants.apiKey}`,
-        },
-      });
-      return response.data.choices[0].text.trim();
-    } catch (error) {
-      console.error('Error fetching response from OpenAI:', error);
-      return 'Sorry, I encountered an error.';
+export class OpenaiService {
+    fetchResponseForFixedQuestion(userMessage: string) {
+      throw new Error('Method not implemented.');
     }
-  }
-}
+    private readonly apiKey: string;
 
-export default OpenAIService;
+    constructor() {
+        this.apiKey = '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';
+    }
+
+    async getResponse(message: string): Promise<string> {
+        try {
+            const response = await axios.post(
+                'https://api.openai.com/v1/engines/text-davinci-002/completions',
+                {
+                    prompt: message,
+                    max_tokens: 150,
+                    temperature: 0.7,
+                    stop: '\n'
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.apiKey}`
+                    }
+                }
+            );
+
+            return response.data.choices[0].text.trim();
+        } catch (error) {
+            console.error('Error fetching response from ChatGPT:', error);
+            return 'Sorry, I am unable to respond at the moment.';
+        }
+    }
+}
