@@ -9,6 +9,9 @@ import { useSpeechRecognition } from 'react-speech-recognition';
 import { split } from 'sentence-splitter';
 import SpeechRecognition from 'react-speech-recognition';
 import axios from 'axios'; // Import Axios
+import { MdDoubleArrow } from "react-icons/md";
+import { HiArrowLeftOnRectangle } from "react-icons/hi2";
+
 
 function Chats(props) {
   const [userName, setUserName] = useState("");
@@ -214,14 +217,14 @@ function Chats(props) {
             </div>}
         </div>
 
-        <div className="w-auto mx-1 border-2 flex-grow rounded-lg">
-          <div className="max-h-full m-12">
-            <div className="flex justify-between">
-              <button onClick={toggleList} className="bg-blue-600 text-white p-1 rounded-lg"> List </button>
-              <button onClick={toggleVoice} className="bg-blue-600 text-white p-1 rounded-lg"> Voice </button>
-            </div>
+        <div className=" mx-1 border-2 flex flex-grow rounded-lg">
 
-            <div className="h-[500px]  rounded-lg overflow-y-scroll">
+          <div className="flex justify-between items-center h-full">
+          <div onClick={toggleList} className=" cursor-pointer m-2"><HiArrowLeftOnRectangle className=" h-6 w-6" /></div>
+          </div>
+
+          <div className="max-h-full flex-grow m-6">
+            <div className="h-[90%] overflow-y-auto ">
 
               {messages.map((message, index) => (
                 <div
@@ -242,14 +245,13 @@ function Chats(props) {
                   <span className="animate-bounce inline-block">&#9612;</span>
                   <span className="animate-bounce inline-block">&#9612;</span>
                   <span className="animate-bounce inline-block">&#9612;</span>
-                  <span className="animate-bounce inline-block">&#9612;</span>
                 </div>
               )}
             </div>
 
             <p style={{ color: 'green' }}>Microphone: {listening ? 'on' : 'off'}</p>
 
-            <form className="flex">
+            <form className="flex rounded-lg border-2 active:border-blue-400">
               <button
                 type="button"
                 className="bg-yellow-400 text-black p-2 mr-2 rounded-lg"
@@ -262,7 +264,7 @@ function Chats(props) {
                 type="text"
                 value={input}
                 onChange={handleInputChange}
-                className="flex-grow border rounded-lg p-2 text-black bg-white"
+                className="flex-grow text-black bg-white focus:outline-none"
                 placeholder="Type your message..."
               ></input>
 
@@ -275,6 +277,11 @@ function Chats(props) {
               </button>
             </form>
           </div>
+
+          <div className="flex justify-between items-center h-full">
+            <div onClick={toggleVoice} className=" cursor-pointer m-2"><MdDoubleArrow className="h-6 w-6" /></div>
+          </div>
+            
         </div>
 
         <div className={`${styles.rslider} ${showVoice ? styles.show : styles.hide}`}>
