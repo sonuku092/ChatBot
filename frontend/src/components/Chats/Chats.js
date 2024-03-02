@@ -11,6 +11,9 @@ import SpeechRecognition from 'react-speech-recognition';
 import axios from 'axios'; // Import Axios
 import { MdDoubleArrow } from "react-icons/md";
 import { HiArrowLeftOnRectangle } from "react-icons/hi2";
+import { CgArrowRightR } from "react-icons/cg";
+
+
 
 
 function Chats(props) {
@@ -187,7 +190,8 @@ function Chats(props) {
 
   return (
     <div className="h-screen">
-      <div className="w-full px-14 py-1 mb-1  ">
+
+      <div className="w-full px-14 py-1 mb-1 border-2 rounded-lg bg-blue-100 fixed">
         <div className="flex gap-1">
           <div className="flex items-center px-2 max-h-max rounded-sm py-1">
             <h1 className={styles.heading}>Chatbot</h1>
@@ -209,7 +213,7 @@ function Chats(props) {
         </div>
       </div>
 
-      <div className="w-full h-[93vh] pb-1 flex">
+      <div className="w-full h-[100vh] pb-1 pt-14 flex">
         <div className={`${styles.slider} ${showList ? styles.show : styles.hide}`}>
           {showList &&
             <div className="p-2 m-1 rounded-md bg-slate-100 items-center">
@@ -224,8 +228,8 @@ function Chats(props) {
           </div>
 
           <div className="max-h-full flex-grow m-6">
-            <div className="h-[90%] overflow-y-auto ">
-
+            <div className="h-[86%] overflow-y-auto">
+              <div className="flex flex-col sticky">
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -239,6 +243,7 @@ function Chats(props) {
                   </div>
                 </div>
               ))}
+              </div>
 
               {isTyping && (
                 <div className="mb-4 text-gray-600">
@@ -271,9 +276,9 @@ function Chats(props) {
               <button
                 type="submit"
                 onClick={handleSubmit}
-                className="bg-blue-600 text-white p-2 ml-2 rounded-[50%] w-10 h-10"
+                className="m-auto text-blue-400 cursor-pointer hover:text-blue-600 rounded-lg "
               >
-                Ok
+               <CgArrowRightR className=" h-8 w-8 items-center mr-1"  />
               </button>
             </form>
           </div>
