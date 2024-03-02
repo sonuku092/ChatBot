@@ -230,6 +230,30 @@ function Chats(props) {
           <div className="max-h-full flex-grow m-6">
             <div className="h-[86%] overflow-y-auto">
               <div className="flex flex-col sticky">
+
+                <div className="flex-col p-4 ">
+                  <div className="p-2 border-2 w-20 h-20 rounded-full mx-auto mb-16 mt-8">
+                  </div>
+
+                  <h2 className="text-2xl font-bold w-fit mx-auto">How can I help you today?</h2>
+                  <p className=" text-xs mx-auto w-fit text-gray-400">Chat with me or use voice commands to interact.</p>
+
+                  <div className="grid grid-cols-2 mt-16 mx-[10%]">
+                    <div className="p-2 m-1 rounded-md border-[1px] items-center cursor-pointer">
+                      <h4 className=" font-semibold text-sm text-gray-600	">How can I protect my skin from sun damage?</h4>
+                      <p className=" text-[10px] text-gray-400">to avoid sun damage.</p>
+                    </div>
+                    <div className="p-2 m-1 rounded-md border-[1px] items-center cursor-pointer">
+                      <h4 className=" font-semibold text-sm text-gray-600	">How can I lower my cholesterol levels naturally?</h4>
+                      <p className=" text-[10px] text-gray-400">to lower cholesterol naturally.</p>
+                    </div>
+                    <div className="p-2 m-1 col-span-2 rounded-md border-[1px] items-center cursor-pointer">
+                      <h4 className=" font-semibold text-sm text-gray-600">How does stress affect overall health?</h4>
+                      <p className=" text-[10px] text-gray-400">Learning to manage stress is important for maintaining overall well-being.</p>
+                    </div>
+                  </div>
+                </div>
+
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -254,7 +278,7 @@ function Chats(props) {
               )}
             </div>
 
-            <p style={{ color: 'green' }}>Microphone: {listening ? 'on' : 'off'}</p>
+            <p className=" text-xs text-green-500">Microphone: {listening ? 'on' : 'off'}</p>
 
             <form className="flex rounded-lg border-2 active:border-blue-400">
               <button
@@ -281,12 +305,17 @@ function Chats(props) {
                <CgArrowRightR className=" h-8 w-8 items-center mr-1"  />
               </button>
             </form>
+            <div className="flex justify-center items-center mt-1">
+              <p className="text-gray-500 text-xs text-center">
+                Disclaimer: ChatBot info may not be perfect. Always verify with a healthcare professional.
+              </p>
+            </div>
           </div>
 
           <div className="flex justify-between items-center h-full">
             <div onClick={toggleVoice} className=" cursor-pointer m-2"><MdDoubleArrow className="h-6 w-6" /></div>
           </div>
-            
+
         </div>
 
         <div className={`${styles.rslider} ${showVoice ? styles.show : styles.hide}`}>
