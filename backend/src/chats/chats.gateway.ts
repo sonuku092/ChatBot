@@ -1,20 +1,81 @@
 import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { OpenaiService } from 'src/shared/services/openai.service';
+import OpenAI from 'openai';
+import Redis from 'ioredis';
 
-@WebSocketGateway({
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
-  },
-})
+const OPENAI_API_KEY = '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'; // Use your API key here
+
+const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+@WebSocketGateway({ cors: true })
 export class ChatGateway {
+  @WebSocketServer()
+  server: Server;
 
-  @WebSocketServer() server: Server;
+  private redis: Redis = new Redis(); // Create a Redis client
+
   @SubscribeMessage('message')
   async handleMessage(@MessageBody() data: string): Promise<void> {
-    const openaiService = new OpenaiService(); // Create an instance of the OpenaiService class
-    const response = await openaiService.getResponse(data); // Call the getResponse method on the instance
-    this.server.emit('message', response);
+    try {
+      // Check if the response is cached in Redis
+      const cachedResponse = await this.redis.get(`cache_${data}`);
+
+      if (cachedResponse) {
+        this.server.emit('message', cachedResponse);
+      } else {
+        const messages = [
+          { role: 'system', content: 'You are a helpful assistant.' },
+          { role: 'user', content: data },
+        ];
+
+        const response = await openai.chat.completions.create({
+          model: 'gpt-3.5-turbo',
+          messages: messages as OpenAI.ChatCompletionMessageParam[], // Convert to the expected type
+          max_tokens: 1024,
+        });
+
+        if (response && response.choices && response.choices.length > 0) {
+          const botResponse = response.choices[0].message.content;
+
+          // Cache the response in Redis
+          await this.redis.set(`cache_${data}`, botResponse);
+
+          this.server.emit('message', botResponse);
+
+        } else {
+          console.error('GPT-3 response was empty:', response);
+        }
+      }
+    } catch (error) {
+      console.error('Error generating response from GPT-3:', error);
+    }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+// import { Server } from 'socket.io';
+// import { OpenaiService } from 'src/shared/services/openai.service';
+
+// @WebSocketGateway({ cors : true})
+// export class ChatGateway {
+
+//   @WebSocketServer() server: Server;
+//   @SubscribeMessage('message')
+//   async handleMessage(@MessageBody() data: string): Promise<void> {
+//     const openaiService = new OpenaiService(); // Create an instance of the OpenaiService class
+//     const response = await openaiService.getResponse(data); // Call the getResponse method on the instance
+//     this.server.emit('message', response);
+//   }
+// }
