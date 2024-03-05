@@ -226,8 +226,20 @@ function Chats(props) {
       <div className="w-full h-[100vh] pb-1 pt-14 flex">
         <div className={`${styles.slider} ${showList ? styles.show : styles.hide}`}>
           {showList &&
-            <div className="p-2 m-1 rounded-md bg-slate-100 items-center">
-              List the items
+            <div className="m-1 rounded-md  items-center h-full p-1">
+
+              <div className="flex items-center justify-center">
+                <button className="p-1 rounded-md border-[2px] items-center cursor-pointer hover:border-red-400 w-full">
+                  <h4 className="font-bold text-sm text-gray-600">SOS</h4>
+                  <p className="text-[10px] text-gray-400">Emergency assistance</p>
+                </button>
+              </div>
+
+              <div className=" flex-col space-y-1 bg-slate-10 rounded overflow-scroll mt-2 w-full h-[90%]">
+                  <button className="p-2 w-full rounded-md border-[1px] text-start font-semibold cursor-pointer text-sm text-gray-600 hover:border-blue-400">
+                    Last Chat
+                  </button>
+              </div>
             </div>}
         </div>
 
@@ -242,7 +254,8 @@ function Chats(props) {
               <div className="flex flex-col sticky">
 
                 <div className="flex-col p-4 ">
-                  <div className="p-2 border-2 w-20 h-20 rounded-full mx-auto mb-16 mt-8">
+                  <div className="border-2 w-20 h-20 rounded-full mx-auto mb-16 mt-8">
+                    <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" alt="avatar" className="w-full h-full rounded-full" />
                   </div>
 
                   <h2 className="text-2xl font-bold w-fit mx-auto text-gray-800">How can I help you today?</h2>
