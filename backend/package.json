@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.2",
-    "@nestjs/common": "^10.0.0",
-    "@nestjs/core": "^10.0.0",
+    "@nestjs/common": "^10.3.3",
+    "@nestjs/core": "^10.3.3",
     "@nestjs/microservices": "^10.3.3",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/platform-socket.io": "^10.3.3",
@@ -31,6 +31,7 @@
     "@tensorflow/tfjs-vis": "^1.1.0",
     "axios": "^1.6.7",
     "dotenv": "^16.4.5",
+    "openai": "^4.28.4",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "socket.io": "^4.7.4",

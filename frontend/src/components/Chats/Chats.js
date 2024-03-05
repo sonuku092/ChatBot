@@ -34,9 +34,19 @@ function Chats(props) {
   const { transcript, listening } = useSpeechRecognition();
 
   const predefinedAnswers = {
-    "What is your name?": "My name is Chatbot.",
-    // Define your predefined answers here
+    'What is your name?': 'My name is HealthBot. How can I assist you today?',
+    'What is the function of the skin?': 'The skin serves as a protective barrier for the body, regulating temperature, preventing dehydration, and providing sensory input.',
+    'How does the heart pump blood throughout the body?': 'The heart pumps blood through a network of arteries and veins using its rhythmic contractions. Blood is pumped from the heart to the rest of the body through arteries and returns to the heart through veins.',
+    'What are some common skin conditions?': 'Common skin conditions include acne, eczema, psoriasis, dermatitis, and fungal infections like athlete\'s foot.',
+    'What role do blood vessels play in skin health?': 'Blood vessels in the skin help regulate temperature by dilating or constricting to release or conserve heat. They also supply nutrients and oxygen to skin cells and remove waste products.',
+    'How does the skin protect against harmful UV radiation?': 'The skin produces melanin, a pigment that absorbs UV radiation and prevents damage to skin cells. Additionally, the outer layer of the skin thickens in response to UV exposure, providing further protection.',
+    'What are the major components of the heart?': 'The major components of the heart include four chambers (two atria and two ventricles), valves, coronary arteries, and the cardiac conduction system.',
+    'How does exercise benefit both the skin and the heart?': 'Exercise improves circulation, which helps deliver oxygen and nutrients to the skin and promotes the removal of toxins. It also strengthens the heart muscle, improves cardiovascular function, and reduces the risk of heart disease.',
+    'What are some lifestyle factors that can impact skin and heart health?': 'Lifestyle factors such as diet, exercise, stress management, sleep quality, and sun exposure can significantly impact both skin and heart health. A balanced diet rich in fruits, vegetables, and omega-3 fatty acids, along with regular physical activity, can promote overall wellness for both the skin and heart.',
+    'How does aging affect the skin and heart?': 'Aging leads to changes in the skin, including reduced elasticity, increased dryness, and the formation of wrinkles. Similarly, the aging process can affect the heart, leading to decreased cardiac output, stiffening of blood vessels, and an increased risk of cardiovascular disease.',
+    'What are some ways to maintain healthy skin and heart simultaneously?': 'Maintaining healthy skin and heart involves a combination of practices such as protecting the skin from sun damage, staying hydrated, eating a balanced diet, exercising regularly, managing stress levels, avoiding smoking, and getting enough sleep.'
   };
+
 
   const handleUserInput = async () => {
     const userMessage = input.trim();
@@ -66,7 +76,7 @@ function Chats(props) {
 
         setMessages((prevMessages) => [...prevMessages, { text: userMessage, fromUser: true }]);
 
-        socket.emit('user-message', userMessage);
+        socket.emit('message', userMessage);
       }
 
       setInput('');
@@ -90,7 +100,7 @@ function Chats(props) {
   const isProcessingRef = useRef(false);
 
   useEffect(() => {
-    socket.on('bot-message', async (message) => {
+    socket.on('message', async (message) => {
       if (!isProcessingRef.current) {
         isProcessingRef.current = true;
         setIsTyping(true);
@@ -153,13 +163,13 @@ function Chats(props) {
     });
 
     // Fetch conversation history from backend when component mounts
-    axios.get('http://localhost:8001/conversations')
-      .then(response => {
-        setConversationHistory(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching conversation history:', error);
-      });
+    // axios.get('http://localhost:8001/conversations')
+    //   .then(response => {
+    //     setConversationHistory(response.data);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching conversation history:', error);
+    //   });
 
     return () => {
       socket.disconnect();
@@ -224,7 +234,7 @@ function Chats(props) {
         <div className=" mx-1 border-2 flex flex-grow rounded-lg relative">
 
           <div className="flex justify-between items-center h-full absolute start-0">
-          <div onClick={toggleList} className=" cursor-pointer m-2"><HiArrowLeftOnRectangle className=" h-6 w-6" /></div>
+            <div onClick={toggleList} className=" cursor-pointer m-2"><HiArrowLeftOnRectangle className=" h-6 w-6" /></div>
           </div>
 
           <div className="max-h-full flex-grow">
@@ -254,19 +264,19 @@ function Chats(props) {
                   </div>
                 </div>
 
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={` flex  ${message.fromUser ? 'text-black-600 justify-end' : ''} rounded-md p-1 `}
-                >
-                  <div className={`${message.fromUser ? 'text-end' : ''} bg-slate-100 max-w-[70%] px-1 py-1 rounded-md`}>
-                    <p className="text-sm font-bold">{message.fromUser ? 'You' : 'Bot'}</p>
-                    <p className="rounded bg-white px-2 py-1 ">
-                      {message.text}
-                    </p>
+                {messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={` flex  ${message.fromUser ? 'text-black-600 justify-end' : ''} rounded-md p-1 `}
+                  >
+                    <div className={`${message.fromUser ? 'text-end' : ''} bg-slate-100 max-w-[70%] px-1 py-1 rounded-md`}>
+                      <p className="text-sm font-bold">{message.fromUser ? 'You' : 'Bot'}</p>
+                      <p className="rounded bg-white px-2 py-1 ">
+                        {message.text}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
               </div>
 
               {isTyping && (
@@ -302,7 +312,7 @@ function Chats(props) {
                 onClick={handleSubmit}
                 className="m-auto text-blue-400 cursor-pointer hover:text-blue-600 rounded-lg "
               >
-               <CgArrowRightR className=" h-8 w-8 items-center mr-1"  />
+                <CgArrowRightR className=" h-8 w-8 items-center mr-1" />
               </button>
             </form>
             <div className="flex justify-center items-center mt-1">

@@ -2,27 +2,24 @@
 
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 @Injectable()
 export class OpenaiService {
-    fetchResponseForFixedQuestion(userMessage: string) {
+    fetchResponseForFixedQuestion(data: string) {
       throw new Error('Method not implemented.');
     }
     private readonly apiKey: string;
 
     constructor() {
-        this.apiKey = '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';
+        this.apiKey = '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';
     }
 
-    async getResponse(message: string): Promise<string> {
+    async getResponse(data: string): Promise<string> {
         try {
             const response = await axios.post(
                 'https://api.openai.com/v1/engines/text-davinci-002/completions',
                 {
-                    prompt: message,
+                    prompt: data,
                     max_tokens: 150,
                     temperature: 0.7,
                     stop: '\n'
