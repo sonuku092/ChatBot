@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import OpenAI from 'openai';
 import Redis from 'ioredis';
 
-const OPENAI_API_KEY = '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'; // Use your API key here
+const OPENAI_API_KEY = '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'; // Use your API key here
 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 

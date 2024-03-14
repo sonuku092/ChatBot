@@ -55,6 +55,7 @@ function Signup() {
             Password: values.pass,
           });
 
+          const docRefId = docRef.id;
           const val = doc(db, "Users", docRef.id);
           const collectionVal = collection(val, "Chats");
           addDoc(collectionVal, {
@@ -64,6 +65,7 @@ function Signup() {
 
           localStorage.setItem("token", await user.getIdToken());
           localStorage.setItem("userName", user.displayName);
+          localStorage.setdocRefId("docRefId", docRefId);
           navigate("/");
         } catch (e) {
           setErrorMsg(e.message);
