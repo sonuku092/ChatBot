@@ -3,7 +3,7 @@ import * as tf from '@tensorflow/tfjs';
 import * as fs from 'fs';
 
 @Controller('predict')
-export class PredictController {
+export class HeartDiseaseModel {
   private model: tf.LayersModel | null = null;
 
   constructor() {
@@ -13,7 +13,7 @@ export class PredictController {
   private loadHeartDiseaseDataset() {
     try {
       // Load the CSV data
-      const csvData = fs.readFileSync('./heart.csv', 'utf8');
+      const csvData = fs.readFileSync('./data/heart.csv', 'utf8');
 
       // Parse the CSV data
       const rows = csvData.split('\n').map(row => row.split(','));

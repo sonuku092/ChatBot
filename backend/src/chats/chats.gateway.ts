@@ -2,11 +2,12 @@ import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody } from
 import { Server } from 'socket.io';
 import OpenAI from 'openai';
 import Redis from 'ioredis';
+import { Controller } from '@nestjs/common';
 
 const OPENAI_API_KEY = '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'; // Use your API key here
 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
-
+@Controller('chats')
 @WebSocketGateway({ cors: true })
 export class ChatGateway {
   @WebSocketServer()
