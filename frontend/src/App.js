@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<Protected Component={ Chats  }/>} />
           <Route path="/Profile" element={<Protected Component={ Profile  }/>} />
           <Route path="/home" element={<Home/>} />
-          <Route path="/chats/Heart" element={<Protected Component={HeartDesease} />} />
+          <Route path="/predict/heartdesease" element={<Protected Component={HeartDesease} />} />
         </Routes>
       </Router>
     </div>
