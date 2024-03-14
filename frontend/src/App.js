@@ -8,6 +8,7 @@ import Chats from './components/Chats/Chats';
 import Protected from './components/Protected';
 import Profile from './components/Profile/Profile';
 import HeartDesease from './components/HeartDisease/HeartDisease';
+import SkinDisease from './components/SkinDisease/SkinDisease';
 
 function App() {
 
@@ -20,7 +21,8 @@ function App() {
           <Route path="/" element={<Protected Component={ Chats  }/>} />
           <Route path="/Profile" element={<Protected Component={ Profile  }/>} />
           <Route path="/home" element={<Home/>} />
-          <Route path="/predict/heartdesease" element={<Protected Component={HeartDesease} />} />
+          <Route path="/predict/heartdisease" element={<Protected Component={HeartDesease} />} />
+          <Route path="/predict/skindisease" element={<Protected Component={SkinDisease} />} />
         </Routes>
       </Router>
     </div>

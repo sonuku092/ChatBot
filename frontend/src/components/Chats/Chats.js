@@ -259,35 +259,35 @@ function Chats(props) {
                     <div className="grid grid-cols-2 mt-16 w-max mx-auto">
                       <div
                         className="p-2 m-1 rounded-md border-[1px] items-center cursor-pointer hover:border-green-400"
-                        onClick={() => navigate("/predict/heartdesease")}
+                        onClick={() => navigate("/predict/heartdisease")}
                       >
                         <h4 className=" font-semibold text-sm text-gray-600	">
-                          HeartDesease
+                          Heart Disease
                         </h4>
                         <p className=" text-[10px] text-gray-400">
                           to avoid sun damage.
                         </p>
                       </div>
-                      <div className="p-2 m-1 rounded-md border-[1px] items-center cursor-pointer hover:border-green-400 ">
+                      <div className="p-2 m-1 rounded-md border-[1px] items-center cursor-pointer hover:border-green-400 "
+                        onClick={ () => navigate("/predict/skindisease")}
+                      >
                         <h4 className=" font-semibold text-sm text-gray-600	">
-                          How can I lower my cholesterol levels naturally?
+                          Skin Disease
                         </h4>
                         <p className=" text-[10px] text-gray-400">
                           to lower cholesterol naturally.
                         </p>
                       </div>
                       <div className="p-2 m-1 col-span-2 rounded-md border-[1px] items-center cursor-pointer hover:border-green-400">
-                        <h4
-                          className=" font-semibold text-sm text-gray-600"
-                          onClick={() => {
-                            setInput("How does stress affect overall health?");
-                            handleSubmit();
-                          }}
+                        <h4 className=" font-semibold text-sm text-gray-600"
+                          onClick={() => setInput("How does stress affect overall health?")
+                        }
                         >
                           How does stress affect overall health?
                         </h4>
                         <p className=" text-[10px] text-gray-400">
-                          Learning to manage stress is important for maintaining overall well-being.
+                          Learning to manage stress is important for maintaining
+                          overall well-being.
                         </p>
                       </div>
                     </div>
