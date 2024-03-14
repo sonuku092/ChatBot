@@ -12,15 +12,15 @@ import axios from 'axios'; // Import Axios
 import { MdDoubleArrow } from "react-icons/md";
 import { HiArrowLeftOnRectangle } from "react-icons/hi2";
 import { CgArrowRightR } from "react-icons/cg";
+import { Navbar } from "../assets";
 
 
 
 
 function Chats(props) {
-  const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
   const [showList, setShowList] = useState(true);
   const [showVoice, setShowVoice] = useState(false);
-  const navigate = useNavigate();
 
   const socket = useMemo(() => io("http://localhost:8001"), []);
 
@@ -156,8 +156,6 @@ function Chats(props) {
   };
 
   useEffect(() => {
-    setUserName(localStorage.getItem("userName"));
-
     socket.on("connect", () => {
       console.log("Connected to server", socket.id);
     });
@@ -176,19 +174,6 @@ function Chats(props) {
     };
   }, [socket]);
 
-  const handleSignout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userName");
-    window.location.reload();
-
-    signOut(auth)
-      .then(() => {
-        navigate("/Home");
-      })
-      .catch((error) => {
-        console.log("Signout error", error);
-      });
-  };
 
   const toggleList = () => {
     setShowList(!showList);
@@ -201,27 +186,7 @@ function Chats(props) {
   return (
     <div className="h-screen">
 
-      <div className="w-full px-14 py-1 mb-1 border-2 rounded-lg bg-blue-100 fixed">
-        <div className="flex gap-1">
-          <div className="flex items-center px-2 max-h-max rounded-sm py-1">
-            <h1 className={styles.heading}>Chatbot</h1>
-          </div>
-          <div className="flex-grow max-h-max rounded-sm py-2">
-            <button className={styles.button} onClick={handleSignout}>
-              Logout
-            </button>
-          </div>
-          <div className="flex w-auto px-5 py-1 max-h-max rounded-sm items-center hover:bg-slate-50">
-            <h1>Eng</h1>
-          </div>
-          <div className="flex w-auto pl-8 py-1 max-h-max rounded-sm items-center hover:bg-slate-50 hover:cursor-pointer">
-            <h2 className="text-[#5f9ea0]">
-              {userName ? `Welcome - ${userName}` : "Please Login"}
-            </h2>
-            <div className="w-6 h-6 rounded-[50%] border-[1px] mx-2 border-[#5f9ea0]"></div>
-          </div>
-        </div>
-      </div>
+      <Navbar />
 
       <div className="w-full h-[100vh] pb-1 pt-14 flex">
         <div className={`${styles.slider} ${showList ? styles.show : styles.hide}`}>
@@ -262,8 +227,10 @@ function Chats(props) {
                   <p className=" text-xs mx-auto w-fit text-gray-400">Chat with me or use voice commands to interact.</p>
 
                   <div className="grid grid-cols-2 mt-16 w-max mx-auto">
-                    <div className="p-2 m-1 rounded-md border-[1px] items-center cursor-pointer hover:border-green-400">
-                      <h4 className=" font-semibold text-sm text-gray-600	">How can I protect my skin from sun damage?</h4>
+                    <div className="p-2 m-1 rounded-md border-[1px] items-center cursor-pointer hover:border-green-400"
+                      onClick={() => navigate('/chats/heart')}
+                    >
+                      <h4 className=" font-semibold text-sm text-gray-600	">HeartDesease</h4>
                       <p className=" text-[10px] text-gray-400">to avoid sun damage.</p>
                     </div>
                     <div className="p-2 m-1 rounded-md border-[1px] items-center cursor-pointer hover:border-green-400 ">
