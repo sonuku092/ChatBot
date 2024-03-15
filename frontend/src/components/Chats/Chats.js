@@ -10,7 +10,7 @@ import axios from "axios"; // Import Axios
 import { MdDoubleArrow } from "react-icons/md";
 import { HiArrowLeftOnRectangle } from "react-icons/hi2";
 import { CgArrowRightR } from "react-icons/cg";
-import { Navbar } from "../assets";
+import { Navbar, SOS } from "../assets";
 
 function Chats(props) {
   const navigate = useNavigate();
@@ -210,14 +210,8 @@ function Chats(props) {
         >
           {showList && (
             <div className="m-1 rounded-md  items-center h-full p-1">
-              <div className="flex items-center justify-center">
-                <button className="p-1 rounded-md border-[2px] items-center cursor-pointer hover:border-red-400 w-full">
-                  <h4 className="font-bold text-sm text-gray-600">SOS</h4>
-                  <p className="text-[10px] text-gray-400">
-                    Emergency assistance
-                  </p>
-                </button>
-              </div>
+              
+              <SOS />
 
               <div className=" flex-col space-y-1 bg-slate-10 rounded overflow-scroll mt-2 w-full h-[90%]">
                 <button className="p-2 w-full rounded-md border-[1px] text-start font-semibold cursor-pointer text-sm text-gray-600 hover:border-blue-400">
