@@ -1,11 +1,10 @@
-// Signup.js
-import React, { useEffect, useState } from 'react';
-import styles from './Signup.module.css';
-import InputControl from '../assets/InputControl/InputControl';
-import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, db } from '../../firebase'; // Import collection and db
-import { collection, addDoc, doc} from 'firebase/firestore'; // Import addDoc 
+import React, { useEffect, useState } from "react";
+import styles from "./Signup.module.css";
+import InputControl from "../assets/InputControl/InputControl";
+import { Link, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore"; // Import setDoc
 
 function Signup() {
   const navigate = useNavigate();
@@ -16,66 +15,53 @@ function Signup() {
     pass: "",
   });
 
-  useEffect(() => { 
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/");
     }
-  });
+  }, [navigate]);
 
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!values.name || !values.email || !values.pass) {
       setErrorMsg("Fill all fields");
       return;
     }
-    
+
     setErrorMsg("");
     setSubmitButtonDisabled(true);
 
-    createUserWithEmailAndPassword(auth, values.email, values.pass)
-      .then(async (res) => {
-        const user = res.user;
-        console.log(user);
+    try {
+      const res = await createUserWithEmailAndPassword(auth, values.email, values.pass);
+      const user = res.user;
 
-        await updateProfile(user, {
-          displayName: values.name,
-        });
-
-        
-        setSubmitButtonDisabled(false);
-
-        try {
-          const docRef = await addDoc(collection(db, "Users"), {
-            User_ID : user.uid,
-            Name: user.displayName,
-            Email: user.email,
-            Password: values.pass,
-          });
-
-          const docRefId = docRef.id;
-          const val = doc(db, "Users", docRef.id);
-          const collectionVal = collection(val, "Chats");
-          addDoc(collectionVal, {
-            User_ID: user.uid,
-            Message: "Hello",
-          });
-
-          localStorage.setItem("token", await user.getIdToken());
-          localStorage.setItem("userName", user.displayName);
-          localStorage.setdocRefId("docRefId", docRefId);
-          navigate("/");
-        } catch (e) {
-          setErrorMsg(e.message);
-        }
-        
-      })
-      .catch((err) => {
-        setSubmitButtonDisabled(false);
-        setErrorMsg(err.message);
+      await updateProfile(user, {
+        displayName: values.name,
       });
+
+      await setDoc(doc(collection(db, "Users"), user.uid), {
+        User_ID: user.uid,
+        Name: user.displayName,
+        Email: user.email,
+        Password: values.pass,
+      });
+
+      await addDoc(collection(db, "Users", user.uid, "Chats"), {
+        User_ID: user.uid,
+        Message: "Hello",
+      });
+
+      localStorage.setItem("token", await user.getIdToken());
+      localStorage.setItem("userName", user.displayName);
+      navigate("/");
+    } catch (err) {
+      setErrorMsg(err.message);
+    } finally {
+      setSubmitButtonDisabled(false);
+    }
   };
 
   return (
@@ -112,7 +98,7 @@ function Signup() {
           <p>
             Already have an account?
             <span>
-              <Link to='/login'> Login</Link>
+              <Link to="/login"> Login</Link>
             </span>
           </p>
         </div>
