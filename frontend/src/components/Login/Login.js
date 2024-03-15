@@ -1,7 +1,7 @@
 // Login.js
 import React, { useEffect, useState } from 'react';
 import styles from './Login.module.css';
-import InputControl from '../InputControl/InputControl';
+import InputControl from '../assets/InputControl/InputControl';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';

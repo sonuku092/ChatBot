@@ -1,7 +1,7 @@
 // Signup.js
 import React, { useEffect, useState } from 'react';
 import styles from './Signup.module.css';
-import InputControl from '../InputControl/InputControl';
+import InputControl from '../assets/InputControl/InputControl';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../firebase'; // Import collection and db

@@ -13,28 +13,30 @@ export class HeartDiseaseModel {
   private loadHeartDiseaseDataset() {
     try {
       // Load the CSV data
-      const csvData = fs.readFileSync('./data/heart.csv', 'utf8');
-
+      const csvData = fs.readFileSync('./heart.csv', 'utf8');
+  
       // Parse the CSV data
       const rows = csvData.split('\n').map(row => row.split(','));
-
+  
       // Extract features and labels
       const x = rows.map(row => row.slice(0, -1).map(parseFloat));
       const y = rows.map(row => parseFloat(row[row.length - 1]));
-
+  
       // Convert data to tensors
       const xs = tf.tensor2d(x);
       const ys = tf.tensor2d(y, [y.length, 1]);
-
+  
       return { xs, ys };
     } catch (error) {
       console.error('Error loading heart disease dataset:', error);
       return null;
     }
   }
+  
 
   private async trainHeartDiseaseModel() {
     const { xs, ys } = this.loadHeartDiseaseDataset();
+    
     if (xs && ys) {
       const model = tf.sequential();
       model.add(tf.layers.dense({ units: 10, inputShape: [xs.shape[1]], activation: 'relu' }));

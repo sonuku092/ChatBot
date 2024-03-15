@@ -2,11 +2,11 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { HeartDiseaseService } from './heart-disease.service';
 
-@Controller('heart-disease')
+@Controller('heart')
 export class HeartDiseaseController {
     constructor(private readonly heartDiseaseService: HeartDiseaseService) {}
 
-    @Post('predict')
+    @Post()
     async predictHeartDisease(@Body() data: number[]): Promise<number[]> {
         return this.heartDiseaseService.predictHeartDisease(data);
     }

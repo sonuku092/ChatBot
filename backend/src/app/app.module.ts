@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ChatsModule } from '../chats/chats.module';
 import { ChatsController } from 'src/chats/chats.controller';
 import { UsersModule } from 'src/users/users.module';
+import { HeartDiseaseModule } from 'src/models/heart-disease/heart-disease.module';
 
 @Module({
   imports: [ChatsModule, UsersModule],

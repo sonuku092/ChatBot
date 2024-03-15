@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './Profile.module.css'
-import OutputControl from '../InputControl/OutputControl'
+import OutputControl from '../assets/InputControl/OutputControl'
 import { Firestore } from 'firebase/firestore'
 import { db } from '../../firebase'
 
