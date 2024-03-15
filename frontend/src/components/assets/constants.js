@@ -1,7 +1,7 @@
 export const navLinks = [
     {
-      id: "account",
-      title: "Account",
+      id: "profile",
+      title: "Profile",
     },
     {
       id: "about",

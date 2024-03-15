@@ -46,7 +46,7 @@ const Navbar = () => {
         <div
           className={`${
             !toggle ? "hidden" : "flex flex-col"
-          } backdrop-blur-sm shadow-md bg-blue-100 absolute top-[50px] border-[1px] border-dimWhite right-12 mx-2 my-2 p-[4px] min-w-[240px] rounded-lg sidebar`}
+          } backdrop-blur-sm shadow-md bg-blue-100 absolute top-[50px] border-[1px] border-black/20 right-12 mx-2 my-2 p-[4px] min-w-[240px] rounded-lg sidebar`}
         >
           <h3 className="font-poppins font-normal  text-center text-black">
             Menu
@@ -62,7 +62,7 @@ const Navbar = () => {
                 }`}
                 onClick={() => setActive(nav.title)}
               >
-                <a href={`#${nav.id}`} className="flex">
+                <a href={`${nav.id}`} className="flex">
                   {nav.title}
                 </a>
               </li>
