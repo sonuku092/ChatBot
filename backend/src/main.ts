@@ -13,6 +13,6 @@ async function bootstrap() {
   // Enable CORS with the defined options
   app.enableCors(corsOptions);
 
-  await app.listen(8001);
+  await app.listen(8000);
 }
 bootstrap();

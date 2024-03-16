@@ -1,63 +1,102 @@
-import React, { useEffect, useState } from 'react';
-import styles from './Profile.module.css';
-import OutputControl from '../assets/InputControl/OutputControl';
-import { Navbar } from '../assets';
-import { auth, db } from '../../firebase';
+import React, { useEffect, useState } from "react";
+import styles from "./Profile.module.css";
+import OutputControl from "../assets/InputControl/OutputControl";
+import { auth, db } from "../../firebase";
+import { Navbar } from "../assets";
+import { doc, getDoc } from "firebase/firestore";
 
 function Profile() {
-    const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null);
 
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                console.log('User is signed in', user.uid);
-
-                // Get the Firestore document reference for the user
-                const userRef = db.collection('Users').doc(user.uid);
-
-                // Retrieve the user data from Firestore
-                userRef.get().then((doc) => {
-                    if (doc.exists) {
-                        const userData = doc.data();
-                        console.log('User data:', userData);
-                        setUserData(userData);
-                    } else {
-                        console.log('User data not found');
-                    }
-                }).catch((error) => {
-                    console.log('Error getting user data:', error);
-                });
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("User is signed in", user.uid);
+        const fetchData = async () => {
+          try {
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              console.log("Document data:", docSnap.data());
+              setUserData(docSnap.data());
             } else {
-                console.log('User is signed out');
-                setUserData(null); // Reset user data when user signs out
+              console.log("No such document!");
+              setUserData(null);
             }
-        });
+          } catch (error) {
+            console.log("Error getting document:", error);
+            setUserData(null);
+          }
+        };
 
-        return () => unsubscribe(); // Cleanup function to unsubscribe from the auth listener
-    }, []);
+        fetchData();
+      } else {
+        console.log("User is signed out");
+        setUserData(null);
+      }
+    });
 
-    return (
-        <section>
-            <Navbar />
+    return () => unsubscribe();
+  }, []);
 
-            <div className={`${styles.profile} `}>
-                <div className={styles.profileImage}>
-                    <img src="https://via.placeholder.com/150" alt="Profile" />
+  return (
+    <section>
+      <Navbar />
+      <div className={`${styles.profile} `}>
+        {userData && (
+          <div className={styles.profileImage}>
+            <img src={userData.ProfileImage} alt="Profile" />
+            <button className={styles.uploadBtn}>
+              <i className="fas fa-camera"></i>
+            </button>
+          </div>
+        )}
+        {!userData && (
+          <div className={styles.profileImage}>
+            <img src="https://via.placeholder.com/150" alt="Profile" />
+            <button className={styles.uploadBtn}>
+              <i className="fas fa-camera"></i>
+            </button>
+          </div>
+        )}
 
-                    <button className={styles.uploadBtn}>
-                        <i className="fas fa-camera"></i>
-                    </button>
-                </div>
-                <div className="grid grid-flow-row-dense grid-cols-2 items-center min-w-[50%] max-w-full gap-2 justify-center">
-                    {userData && Object.entries(userData).map(([key, value]) => (
-                        <div key={key}>
-                            <OutputControl label={key} value={value} />
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
+        <div className="grid grid-flow-row-dense grid-cols-2 items-center min-w-[50%] max-w-full gap-2 justify-center">
+          {userData && (
+            <>
+              {userData.Name && (
+                <OutputControl label="Name" value={userData.Name} />
+              )}
+              {userData.Username && (
+                <OutputControl label="Username" value={userData.Username} />
+              )}
+              {userData.Age && (
+                <OutputControl label="Age" value={userData.Age} />
+              )}
+              {userData.Gender && (
+                <OutputControl label="Gender" value={userData.Gender} />
+              )}
+              {userData.Email && (
+                <OutputControl label="Email" value={userData.Email} />
+              )}
+              {userData.Address && (
+                <OutputControl label="Address" value={userData.Address} />
+              )}
+              {userData.Phone && (
+                <OutputControl label="Phone" value={userData.Phone} />
+              )}
+            </>
+          )}
+          {!userData && (
+            <>
+              <OutputControl label="Name" value="......." />
+              <OutputControl label="Email" value="......." />
+              <OutputControl label="Username" value="......." />
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export default Profile;
