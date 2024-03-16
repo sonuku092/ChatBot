@@ -3,43 +3,47 @@ import axios from "axios";
 import "./heartDesease.css"; // Import the CSS file
 
 import { Navbar } from "../assets"; // Import the Navbar component
+const ENDPOINT = "http://localhost:8001"; // Update the endpoint
 
-const HeartDesease = () => {
-  const [result, setResult] = useState("");
-  const [inputs, setInputs] = useState({
-    age: "",
-    sex: "",
-    cp: "",
-    trestbps: "",
-    chol: "",
-    fbs: "",
-    restecg: "",
-    thalach: "",
-    exang: "",
-    oldpeak: "",
-    slope: "",
-    ca: "",
-    thal: "",
+const HeartDesease = () => {const [result, setResult] = useState("");
+const [inputs, setInputs] = useState({
+  age: "",
+  sex: "",
+  cp: "",
+  trestbps: "",
+  chol: "",
+  fbs: "",
+  restecg: "",
+  thalach: "",
+  exang: "",
+  oldpeak: "",
+  slope: "",
+  ca: "",
+  thal: "",
+});
+
+useEffect(() => {
+  const socket = socketIOClient(ENDPOINT);
+  socket.on("heart", (data) => {
+    setResult(data.prediction);
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
-  };
+  return () => socket.disconnect();
+}, []);
 
-  const predict = () => {
-    axios
-      .post("http://localhost:8001/predict", inputs)
-      .then((response) => {
-        setResult(response.data.prediction);
-      })
-      .catch((error) => {
-        console.error("Error predicting:", error);
-      });
-  };
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setInputs({
+    ...inputs,
+    [name]: value,
+  });
+};
+
+const predict = () => {
+  const socket = socketIOClient(ENDPOINT);
+  socket.emit("heart", inputs);
+};
+
 
   return (
     <section>

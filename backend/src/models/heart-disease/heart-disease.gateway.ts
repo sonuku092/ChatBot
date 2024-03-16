@@ -9,8 +9,9 @@ export class HeartDiseaseGateway {
 
     constructor(private readonly heartDiseaseService: HeartDiseaseService) {}
 
-    @SubscribeMessage('heart-disease-prediction')
-    async handleHeartDiseasePrediction(@MessageBody() data: number[]): Promise<number[]> {
-        return this.heartDiseaseService.predictHeartDisease(data);
+    @SubscribeMessage('heart')
+    async handleHeartDiseasePrediction(@MessageBody() data: any): Promise<void> {
+        const prediction = await this.heartDiseaseService.predictHeartDisease(data);
+        this.server.emit('prediction', { prediction });
     }
 }
