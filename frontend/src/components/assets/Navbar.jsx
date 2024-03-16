@@ -1,12 +1,15 @@
 import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { navLinks } from "./constants";
+import { auth } from "../../firebase";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
+  const [PhotoUrl, setPhotoUrl] = useState("https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-479x512-n8sg74wg.png");
   const [active, setActive] = useState("profile");
   const [toggle, setToggle] = useState(false);
+  const currentUser= auth.currentUser;
 
   const handleSignout = () => {
     localStorage.removeItem("userName");
@@ -17,6 +20,11 @@ const Navbar = () => {
 
   useEffect(() => {
     setUserName(localStorage.getItem("userName"));
+    if(currentUser && currentUser.photoURL)
+    {
+      setPhotoUrl(currentUser.photoURL);
+    }
+
   }, []);
 
   return (
@@ -39,7 +47,9 @@ const Navbar = () => {
             <h2 className="text-[#5f9ea0]">
               {userName ? `Welcome - ${userName}` : "Please Login"}
             </h2>
-            <div className="w-6 h-6 rounded-[50%] border-[1px] mx-2 border-[#5f9ea0]"></div>
+            <div className="w-6 h-6 rounded-[50%] border-[1px] mx-2 border-[#5f9ea0]">
+              <img src={PhotoUrl} className=" scale-75 object-cover" alt="Profile" />
+            </div>
           </div>
         </div>
 

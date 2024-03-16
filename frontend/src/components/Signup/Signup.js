@@ -40,6 +40,7 @@ function Signup() {
 
       await updateProfile(user, {
         displayName: values.name,
+        photoURL: "https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-479x512-n8sg74wg.png",
       });
 
       await setDoc(doc(collection(db, "Users"), user.uid), {

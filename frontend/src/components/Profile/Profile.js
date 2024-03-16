@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
 import OutputControl from "../assets/InputControl/OutputControl";
-import { auth, db } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 import { Navbar } from "../assets";
 import { doc, getDoc } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
 
 function Profile() {
   const [userData, setUserData] = useState(null);
+  const [image, setImage] = useState("https://via.placeholder.com/150");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -19,6 +21,14 @@ function Profile() {
             if (docSnap.exists()) {
               console.log("Document data:", docSnap.data());
               setUserData(docSnap.data());
+
+              getDownloadURL(ref(storage, "./ProfileUrl/pexels-yuliya-strizhkina-1198802.jpg"))
+                .then((url) => {
+                  setImage(url);
+                })
+                .catch((error) => {
+                  console.log("Error getting document:", error);
+                });
             } else {
               console.log("No such document!");
               setUserData(null);
@@ -45,7 +55,7 @@ function Profile() {
       <div className={`${styles.profile} `}>
         {userData && (
           <div className={styles.profileImage}>
-            <img src={userData.ProfileImage} alt="Profile" />
+            <img src={image} alt="Profile" />
             <button className={styles.uploadBtn}>
               <i className="fas fa-camera"></i>
             </button>
@@ -53,7 +63,7 @@ function Profile() {
         )}
         {!userData && (
           <div className={styles.profileImage}>
-            <img src="https://via.placeholder.com/150" alt="Profile" />
+            <img src={image} alt="Profile" />
             <button className={styles.uploadBtn}>
               <i className="fas fa-camera"></i>
             </button>
