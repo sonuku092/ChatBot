@@ -5,4 +5,7 @@ export class ChatsService {
     getHello(): string {
         return 'Hello World!';
     }
+    getAllChats() {
+        return 'All chats';
+    }
 }

@@ -7,7 +7,7 @@ import { Controller } from '@nestjs/common';
 const OPENAI_API_KEY = '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'; // Use your API key here
 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
-@Controller('chats')
+@Controller()
 @WebSocketGateway({ cors: true })
 export class ChatGateway {
   @WebSocketServer()
@@ -50,5 +50,14 @@ export class ChatGateway {
     } catch (error) {
       console.error('Error generating response from GPT-3:', error);
     }
+  }
+
+  @SubscribeMessage('hello')
+  async handleTyping(@MessageBody() data: string): Promise<void> {
+    this.server.emit('hello', data);
+    
+  }
+  async handleConnection() {
+    console.log('New client connected');
   }
 }
