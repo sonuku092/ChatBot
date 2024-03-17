@@ -1,13 +1,28 @@
 // heart-disease.controller.ts
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { HeartDiseaseService } from './heart-disease.service';
+import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { Server } from 'socket.io';
 
-@Controller('heart')
-export class HeartDiseaseController {
+@Controller()
+export class heart {
     constructor(private readonly heartDiseaseService: HeartDiseaseService) {}
 
-    @Post()
-    async predictHeartDisease(@Body() data: number[]): Promise<number[]> {
-        return this.heartDiseaseService.predictHeartDisease(data);
+    @Get()
+    getHello(): string {
+        return this.heartDiseaseService.getHello();
+    }
+}
+
+@Controller()
+@WebSocketGateway({ cors: true })
+export class HeartDiseaseController {
+    @WebSocketServer()
+    server: Server;
+
+    @SubscribeMessage('websocket')
+    handleWebSocket(): string {
+        console.log('websocket');
+        return 'WebSocket message received';
     }
 }

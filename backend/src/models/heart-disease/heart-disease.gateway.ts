@@ -14,4 +14,9 @@ export class HeartDiseaseGateway {
         const prediction = await this.heartDiseaseService.predictHeartDisease(data);
         this.server.emit('prediction', { prediction });
     }
+
+    @SubscribeMessage('hello')
+    async handleTyping(@MessageBody() data: string): Promise<void> {
+        this.server.emit('hello', data);
+    }
 }

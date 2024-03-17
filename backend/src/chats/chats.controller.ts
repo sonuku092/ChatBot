@@ -2,16 +2,18 @@
 
 import { Controller, Post, Body, Get } from '@nestjs/common';
 import { ChatsService } from './chats.service';
-import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 
-@Controller('chats')
+@Controller()
 @WebSocketGateway({ cors: true })
 export class ChatsController {
     constructor( private readonly chatsService: ChatsService,) {}
 
     @WebSocketServer()
     server: any;
-    getAllChats() {
-        return this.chatsService.getAllChats();
+
+    @SubscribeMessage('message')
+    async handleTyping(@Body() data: string): Promise<void> {
+        this.server.emit('message', data);
     }
 }

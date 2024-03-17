@@ -57,7 +57,5 @@ export class ChatGateway {
     this.server.emit('hello', data);
     
   }
-  async handleConnection() {
-    console.log('New client connected');
-  }
+ 
 }
