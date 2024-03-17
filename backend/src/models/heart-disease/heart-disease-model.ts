@@ -2,7 +2,7 @@ import { Controller, Post, Body } from '@nestjs/common';
 import * as tf from '@tensorflow/tfjs';
 import * as fs from 'fs';
 
-@Controller('predict')
+@Controller('heart-disease')
 export class HeartDiseaseModel {
   private model: tf.LayersModel | null = null;
 
@@ -25,7 +25,7 @@ export class HeartDiseaseModel {
     this.model = await this.loadKerasModel();
   }
 
-  @Post()
+  @Post('predict')
   async predict(@Body() data: number[][]): Promise<number[]> {
     if (!this.model) {
       console.error('Model not initialized.');

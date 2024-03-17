@@ -18,7 +18,7 @@ function Chats(props) {
   const [showVoice, setShowVoice] = useState(false);
   const [activeChat, setActiveChat] = useState(false);
 
-  const socket = useMemo(() => io("http://localhost:8000"), []);
+  const socket = useMemo(() => io("http://localhost:8000/chats"), []);
 
   const [messages, setMessages] = useState([
     { text: "Hello, I am Chatbot", fromUser: false },
@@ -174,18 +174,13 @@ function Chats(props) {
   };
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected to server", socket.id);
-    });
-
-    // Fetch conversation history from backend when component mounts
-    // axios.get('http://localhost:8001/conversations')
-    //   .then(response => {
-    //     setConversationHistory(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching conversation history:', error);
-    //   });
+    if (conversationHistory.length > 0) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: conversationHistory[0], fromUser: false },
+      ]);
+      setConversationHistory([]);
+    }
 
     return () => {
       socket.disconnect();
