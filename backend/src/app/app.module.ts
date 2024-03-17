@@ -7,8 +7,8 @@ import { UsersModule } from 'src/users/users.module';
 import { HeartDiseaseModule } from 'src/models/heart-disease/heart-disease.module';
 
 @Module({
-  imports: [ChatsModule, UsersModule],
-  controllers: [ChatsController],
+  imports: [ChatsModule, UsersModule, HeartDiseaseModule],
+  controllers: [AppController, ChatsController],
   providers: [AppService],
 })
 export class AppModule {}

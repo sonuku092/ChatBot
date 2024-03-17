@@ -18,7 +18,7 @@ function Chats(props) {
   const [showVoice, setShowVoice] = useState(false);
   const [activeChat, setActiveChat] = useState(false);
 
-  const socket = useMemo(() => io("http://localhost:8001"), []);
+  const socket = useMemo(() => io("http://localhost:8000"), []);
 
   const [messages, setMessages] = useState([
     { text: "Hello, I am Chatbot", fromUser: false },
